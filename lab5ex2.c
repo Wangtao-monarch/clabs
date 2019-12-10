@@ -1,5 +1,22 @@
 #include<stdio.h>
 #include<ctype.h>
+#define BUFSIZE 100
+char buf[BUFSIZE];
+int bufp = 0;
+int getch(void)
+{
+    return(bufp > 0) ? buf[--bufp] : getchar();
+}
+
+void ungetch(int c)
+{
+    if (bufp >= BUFSIZE)
+        printf("unget:too many characters\n");
+    else
+        buf[bufp++] = c;
+        
+}
+
 int getfloat(float *pf)
 {
     int c,sign;
@@ -35,8 +52,8 @@ int getfloat(float *pf)
     }
     if(c != EOF) {
         ungetch(c);
+    }
 
-        cnt++;
     if(cnt) {
         *pf += 1.0 * f / (cnt * 10);
     }
